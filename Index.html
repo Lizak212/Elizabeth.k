@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <title>Timer</title>
+  
+  <style>
+    body {
+      /* to center items on screen */
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      flex-direction: column;
+    }
+
+    input {
+      /* to add spacing */
+      margin-bottom: 10px;
+    }
+
+    .alert {
+      background-color: #4CAF50;
+      position: fixed;
+      top: 50%;
+      left: 50%;
+      transform: translate (-50%, -50%);
+      visibility: hidden;
+      padding: 10px;
+      text-align: center;
+      border-radius: 10px;
+    }
+
+    button {
+      background-color: green;
+    }
+  </style>
+</head>
+
+<body>
+  <h1>Timer</h1>
+
+  <label>What is the amount of hours?</label>
+  <input type = "number" id = "hours" min = "0" max = "24" placeholder = "0" required>
+  <label>What is the amount of minutes?</label>
+  <input type = "number" id = "minutes" min = "0" max = "60" placeholder = "0" required>
+  <label>What is the amount of seconds?</label>
+  <input type = "number" id = "seconds" min = "0" max = "60" placeholder = "0" required>
+
+  <button onclick = "startTimer()">Start</button>
+
+  <p id = "timer"></p>
+
+  <div class = "alert" id = "alert">
+    <p>timer is finished</p>
+    <button onclick = "finishTimer()">Finish</button>
+  </div>
+
+  <script>
+    function startTimer() {
+      var hours = parseInt (document.getElementById ("hours").value);
+      var minutes = parseInt (document.getElementById ("minutes").value);
+      var seconds = parseInt (document.getElementById ("seconds").value);
+    
+      if (isNaN (hours)) {
+        hours = 0;
+      }
+
+      if (isNaN (minutes)) {
+        minutes = 0;
+      }
+
+      if (isNaN (seconds)) {
+        seconds = 0;
+      }
+    
+      var totalSeconds = (60*minutes) + (3600*hours) + seconds;
+      
+      var timer = setInterval (function () {
+        var hoursLeft = Math.floor (totalSeconds / 3600);
+        var minutesLeft = Math.floor ((totalSeconds % 3600) / 60);
+        var secondsLeft = Math.floor (totalSeconds % 60);
+
+        document.getElementById ("timer").innerHTML = hoursLeft + "h " + minutesLeft + "m " + secondsLeft + "s";
+
+        if (totalSeconds <= 0) {
+          clearInterval (timer);
+          showAlert();
+        } else {
+          totalSeconds -= 1;
+        } 
+      }, 1000);
+    }
+
+    function showAlert () {
+      document.getElementById ("alert").style.visibility = "visible";
+    }
+
+    function finishTimer () {
+      document.getElementById ("alert").style.visibility = "hidden";
+    }
+  </script>
+</body>
+
+</html>
